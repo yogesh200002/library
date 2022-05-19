@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">    
+    <script src="script.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library</title>
+</head>
+<body>
+    <header>
+        <div>Library</div>
+        <button class="addbookbtn">+ Add Book</button>
+    </header>
+    <main>
+        <div id="top-header">Book Shelf</div>
+        <div class="modal">
+            <div class="modal-box-content">
+                <header>
+                    <div id="modal-box header">Book Details</div>
+                    <span class="close-icon">X</span>
+                </header>
+                <form method="get" action="#">
+                    <input type="text" placeholder="Ex: Harry Potter and the Philospher's Stone" id="book-name" minlength='3' maxlength="50" required> 
+                    <label for="book-name">Name of the Book</label>
+                    <input type="text" placeholder="Ex: J. K. Rowling" id="author-name" minlength='3' maxlength="30" required>
+                    <label for="author-name">Author Name</label>
+                    <input type="month" value="1997-06" id="publish-year" required>
+                    <label for="publish-date">Publish Year</label>
+                    <input type="number" placeholder="Ex: 223" id="pages" min='1' required>
+                    <label for="pages">Number of Pages</label>
+                    <input type="number" placeholder="Ex: 100" id="pages-completed">
+                    <label for="edit-pages-completed">Pages Completed (leave blank if you read the Book)</label>
+                    <button id="addbookbtnform">Add Book</button>
+                </form>
+            </div>
+        </div>
+        <div class="edit-modal">
+            <div class="modal-box-content">
+                <header>
+                    <div id="modal-box header">Edit Book Details</div>
+                    <span class="close-icon">X</span>
+                </header>
+                <form method="get" action="#">
+                    <input type="text" placeholder="Ex: Harry Potter and the Philospher's Stone" id="edit-book-name" minlength='3' maxlength="50" required> 
+                    <label for="edit-book-name">Name of the Book</label>
+                    <input type="text" placeholder="Ex: J. K. Rowling" id="edit-author-name" minlength='3' maxlength="30" required>
+                    <label for="edit-author-name">Author Name</label>
+                    <input type="month" value="1997-06" id="edit-publish-year" required>
+                    <label for="edit-publish-date">Publish Year</label>
+                    <input type="number" placeholder="Ex: 223" id="edit-pages" min='1' required>
+                    <label for="edit-pages">Number of Pages</label>
+                    <input type="number" placeholder="Ex: 100" id="edit-pages-completed">
+                    <label for="edit-pages-completed">Pages Completed</label>
+                    <button id="editbookbtnform" type="button">Save Book</button>
+                </form>
+            </div>
+        </div>
+        <div class="books">
+        </div>
+    </main>
+    <footer>
+        <div>Made with love by Yogesh :)</div>
+    </footer>
+</body>
+</html>
