@@ -18,6 +18,10 @@ const editPagesCompletedLabelHTML = document.querySelector('#edit-pages-complete
 const saveBookbtn = document.querySelector('#editbookbtnform')
 const bookDisplay = document.querySelector('.books')
 const form = document.querySelector('form')
+const confirmModal = document.querySelector('.confirm-delete-modal')
+const deleteModalBtns = document.querySelector('.buttons')
+const yesbtn = deleteModalBtns.childNodes[1]
+const nobtn = deleteModalBtns.childNodes[3]
 let temp;
 
 let myLibrary = []
@@ -28,7 +32,7 @@ closebtn.forEach(btn => {
 })
 
 window.addEventListener('click',(e) => {
-    if(e.target == modal || e.target == editModal){
+    if(e.target == modal || e.target == editModal || e.target == confirmModal){
         closeModal()
     }
 })
@@ -40,6 +44,7 @@ function displayModal() {
 function closeModal(){
     modal.style.display = 'none'
     editModal.style.display = 'none'
+    confirmModal.style.display = 'none'
 }
 
 addbookbtnform.addEventListener('click',function(e){ 
@@ -57,6 +62,14 @@ addbookbtnform.addEventListener('click',function(e){
     }
 })
 
+deleteModalBtns.childNodes[1].addEventListener('click',()=>{
+    document.getElementById(`${temp}`).remove()
+    myLibrary.splice(temp,1)
+    bookIndex()
+    closeModal()
+})
+deleteModalBtns.childNodes[3].addEventListener('click',closeModal)
+
 class book{
     constructor(name,author,publishYear,numberOfPages,pagesCompleted){
         this.name = name;
@@ -73,7 +86,6 @@ function addBookToLibrary(book){
 
 function createGrid(bookArray){
     const gridCell = document.createElement('div')
-    gridCell.id = `${myLibrary.length-1}`
     const cellName = document.createElement('div')
     cellName.classList.add('book-title')
     const cellAuthor = document.createElement('div')
@@ -109,6 +121,7 @@ function createGrid(bookArray){
 
 let testbook = new book(`The White Tiger`,`Arvind Adiga`,`2008-09`,`218`,`218`)
 addBookToLibrary(testbook)
+
 
 function clearValue(){
     form.reset()
@@ -146,8 +159,8 @@ function iconBar(cell,array){
     deleteIcon.classList.add('material-icons')
     deleteIcon.textContent = ' delete '
     deleteIcon.addEventListener('click',(event)=>{
-        document.getElementById(`${event.target.parentElement.parentElement.id}`).remove()
-        myLibrary.splice(event.target.parentElement.parentElement.id,1)
+        temp = event.target.parentElement.parentElement.id
+        confirmModal.style.display = 'block'
     })
     editIcon.classList.add('material-icons')
     editIcon.textContent = ' edit '
@@ -238,3 +251,11 @@ function modifyArray(index){
     myLibrary[index].numberOfPages = editPages.value
     myLibrary[index].pagesCompleted = editPagesCompletedHTML.value
 }
+
+function bookIndex(){
+    for (let index = 0; index <= myLibrary.length; index++) {
+        bookDisplay.childNodes[index].id = index-1;
+    }
+}
+
+bookIndex()
