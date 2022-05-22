@@ -23,16 +23,16 @@
                     <span class="close-icon">X</span>
                 </header>
                 <form method="get" action="#">
-                    <input type="text" placeholder="Ex: Harry Potter and the Philospher's Stone" id="book-name" minlength='3' maxlength="50" required> 
                     <label for="book-name">Name of the Book</label>
+                    <input type="text" placeholder="Ex: Harry Potter and the Philospher's Stone" id="book-name" minlength='3' maxlength="50" required>
+                    <label for="author-name">Author Name</label> 
                     <input type="text" placeholder="Ex: J. K. Rowling" id="author-name" minlength='3' maxlength="30" required>
-                    <label for="author-name">Author Name</label>
-                    <input type="month" value="1997-06" id="publish-year" required>
                     <label for="publish-date">Publish Year</label>
-                    <input type="number" placeholder="Ex: 223" id="pages" min='1' required>
+                    <input type="month" value="1997-06" id="publish-year" required>
                     <label for="pages">Number of Pages</label>
-                    <input type="number" placeholder="Ex: 100" id="pages-completed">
+                    <input type="number" placeholder="Ex: 223" id="pages" min='1' required>
                     <label for="edit-pages-completed">Pages Completed (leave blank if you read the Book)</label>
+                    <input type="number" placeholder="Ex: 100" id="pages-completed">
                     <button id="addbookbtnform">Add Book</button>
                 </form>
             </div>
@@ -44,16 +44,16 @@
                     <span class="close-icon">X</span>
                 </header>
                 <form method="get" action="#">
-                    <input type="text" placeholder="Ex: Harry Potter and the Philospher's Stone" id="edit-book-name" minlength='3' maxlength="50" required> 
                     <label for="edit-book-name">Name of the Book</label>
-                    <input type="text" placeholder="Ex: J. K. Rowling" id="edit-author-name" minlength='3' maxlength="30" required>
+                    <input type="text" placeholder="Ex: Harry Potter and the Philospher's Stone" id="edit-book-name" minlength='3' maxlength="50" required> 
                     <label for="edit-author-name">Author Name</label>
-                    <input type="month" value="1997-06" id="edit-publish-year" required>
+                    <input type="text" placeholder="Ex: J. K. Rowling" id="edit-author-name" minlength='3' maxlength="30" required>
                     <label for="edit-publish-date">Publish Year</label>
-                    <input type="number" placeholder="Ex: 223" id="edit-pages" min='1' required>
+                    <input type="month" value="1997-06" id="edit-publish-year" required>
                     <label for="edit-pages">Number of Pages</label>
+                    <input type="number" placeholder="Ex: 223" id="edit-pages" min='1' required>
+                    <label for="edit-pages-completed">Pages Completed (Leave blank if you read the book)</label>
                     <input type="number" placeholder="Ex: 100" id="edit-pages-completed">
-                    <label for="edit-pages-completed">Pages Completed</label>
                     <button id="editbookbtnform" type="button">Save Book</button>
                 </form>
             </div>
