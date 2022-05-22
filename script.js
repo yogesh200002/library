@@ -57,6 +57,7 @@ addbookbtnform.addEventListener('click',function(e){
         e.preventDefault()
         addBookToLibrary(addbook)
         createGrid(addbook)
+        bookIndex()
         closeModal()
         clearValue()
     }
@@ -68,6 +69,7 @@ deleteModalBtns.childNodes[1].addEventListener('click',()=>{
     bookIndex()
     closeModal()
 })
+
 deleteModalBtns.childNodes[3].addEventListener('click',closeModal)
 
 class book{
@@ -137,8 +139,8 @@ function progressBar(cell,array,cellPages){
     outerPagesProgress.textContent = `Progress: ${(array.pagesCompleted)}`+`/`+`${(array.numberOfPages)} pages` 
     innerBar.textContent = `${Math.floor(((array.pagesCompleted / array.numberOfPages) * 100))}%`
     innerBar.style.textAlign = 'center'
-    outerBar.style.backgroundColor = 'whitesmoke'
-    innerBar.style.backgroundColor = 'green'
+    outerBar.style.backgroundColor = '#e5e5e5'
+    innerBar.style.backgroundColor = '#22c55e'
     innerBar.style.color = 'white'
     innerBar.style.width = `${Math.floor(((array.pagesCompleted/array.numberOfPages)*100))}%`
     outerBar.appendChild(innerBar)
@@ -147,23 +149,26 @@ function progressBar(cell,array,cellPages){
     if(array.pagesCompleted == '' || array.pagesCompleted == undefined || array.pagesCompleted == NaN || array.pagesCompleted == array.numberOfPages){
         outerBar.style.display = 'none'
         outerPagesProgress.style.display = 'none'
-        cellPages.textContent = 'Completed'
+        cellPages.textContent = 'Progress: Completed'
     }
 }
 
 function iconBar(cell,array){
     const bar = document.createElement('div')
+    bar.classList.add('icon-bar')
     const deleteIcon = document.createElement('i')
     const editIcon = document.createElement('i')
     const readIcon = document.createElement('i')
     deleteIcon.classList.add('material-icons')
     deleteIcon.textContent = ' delete '
+    deleteIcon.setAttribute('title','Delete entry')
     deleteIcon.addEventListener('click',(event)=>{
         temp = event.target.parentElement.parentElement.id
         confirmModal.style.display = 'block'
     })
     editIcon.classList.add('material-icons')
     editIcon.textContent = ' edit '
+    editIcon.setAttribute('title','Edit entry')
     editIcon.addEventListener('click', (event)=>{
         temp = event.target.parentElement.parentElement.id
         editModal.style.display = 'block'
@@ -175,9 +180,10 @@ function iconBar(cell,array){
     })
     readIcon.classList.add('material-icons')
     readIcon.textContent = ' done '
+    readIcon.setAttribute('title','Mark as completed')
     readIcon.addEventListener('click',(event) => {
         temp = event.target.parentElement.parentElement.id
-        document.getElementById(`${temp}`).childNodes[4].textContent = 'Completed'
+        document.getElementById(`${temp}`).childNodes[4].textContent = 'Progress: Completed'
         document.getElementById(`${temp}`).childNodes[5].style.display = 'none'
         document.getElementById(`${temp}`).childNodes[6].style.display = 'none'
         myLibrary[event.target.parentElement.parentElement.id].pagesCompleted = myLibrary[event.target.parentElement.parentElement.id].numberOfPages
@@ -211,7 +217,7 @@ function modifyGrid(arrayIndex){
     editBook.childNodes[2].textContent = `Publish Year:${editPublishYearHTML.value}`
     editBook.childNodes[3].textContent = `No. Of. Pages:${editPages.value}`
     if(editPagesCompletedHTML.value == '' || editPagesCompletedHTML.value == undefined || editPagesCompletedHTML.value == NaN || editPagesCompletedHTML.value == editPages.value){
-        editBook.childNodes[4].textContent = 'Completed'
+        editBook.childNodes[4].textContent = 'Progress: Completed'
         editBook.childNodes[5].style.display = 'none'
         editBook.childNodes[6].style.display = 'none'
     }
@@ -228,7 +234,7 @@ function modifyGrid(arrayIndex){
         readIcon.textContent = ' done '
         readIcon.addEventListener('click',(event) => {
             temp = event.target.parentElement.parentElement.id
-            document.getElementById(`${temp}`).childNodes[4].textContent = 'Completed'
+            document.getElementById(`${temp}`).childNodes[4].textContent = 'Progress: Completed'
             document.getElementById(`${temp}`).childNodes[5].style.display = 'none'
             document.getElementById(`${temp}`).childNodes[6].style.display = 'none'
             myLibrary[event.target.parentElement.parentElement.id].pagesCompleted = myLibrary[event.target.parentElement.parentElement.id].numberOfPages
