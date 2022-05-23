@@ -1,17 +1,3 @@
-@media only screen and (max-width: 350px) {
-    #confirm-box-content{
-        width: 70%;
-        height: 30%;
-    }
-    .modal-box-content,#confirm-box-content{
-        width: 80%;
-        height: 80%;
-    }
-    .books{
-        justify-content: center;
-    }
-}
-
 body{
     margin: 0;
     padding: 0;
@@ -187,4 +173,18 @@ footer{
     background-color: aliceblue;
     font-size: large;
     font-weight: bold;
+}
+
+@media screen and (max-width: 450px){
+    #confirm-box-content{
+        width: 70%;
+        height: 30%;
+    }
+    .modal-box-content,#confirm-box-content{
+        width: 80%;
+        height: 80%;
+    }
+    .books{
+        justify-content: center;
+    }
 }
