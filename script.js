@@ -1,3 +1,4 @@
+// Initialising Selectors
 const modal = document.querySelector('.modal')
 const addBookbtnmodal = document.querySelector('.addbookbtn')
 const editModal = document.querySelector('.edit-modal')
@@ -22,13 +23,35 @@ const confirmModal = document.querySelector('.confirm-delete-modal')
 const deleteModalBtns = document.querySelector('.buttons')
 const yesbtn = deleteModalBtns.childNodes[1]
 const nobtn = deleteModalBtns.childNodes[3]
+const deleteAll = document.querySelector('#delete-all-btn')
 let temp;
 
 let myLibrary = []
 
+//Checking if LocalStorage is available if not create Cells
+if(localStorage.getItem('books') === null){
+    myLibrary = []
+}
+else{
+    myLibrary = JSON.parse(localStorage.getItem('books'));
+    for (let index = 0; index < myLibrary.length; index++) {
+        createGrid(myLibrary[index]);
+        bookIndex()
+    }
+}
+
+//Event Listeners of Addbook, Close and delete All button.
 addBookbtnmodal.addEventListener('click',displayModal)
 closebtn.forEach(btn => {
     btn.addEventListener('click',closeModal)
+})
+
+deleteAll.addEventListener('click',()=>{
+    while (bookDisplay.lastElementChild) {
+        bookDisplay.removeChild(bookDisplay.lastElementChild)
+    }
+    myLibrary.splice(0,myLibrary.length)
+    saveStorage()
 })
 
 window.addEventListener('click',(e) => {
@@ -36,6 +59,11 @@ window.addEventListener('click',(e) => {
         closeModal()
     }
 })
+
+// Saving or updating localStorage
+function saveStorage(){
+    localStorage.setItem('books',JSON.stringify(myLibrary))
+}
 
 function displayModal() {
     modal.style.display = 'block'
@@ -47,6 +75,8 @@ function closeModal(){
     confirmModal.style.display = 'none'
 }
 
+
+// EventListener for Form's Add book Button 
 addbookbtnform.addEventListener('click',function(e){ 
     let addbook = new book(`${bookName.value}`,`${authorName.value}`,`${publishYearHTML.value}`,`${pages.value}`,`${pagesCompletedHTML.value}`)
     if(form.checkValidity() === false){
@@ -60,13 +90,16 @@ addbookbtnform.addEventListener('click',function(e){
         bookIndex()
         closeModal()
         clearValue()
+        saveStorage()
     }
 })
 
+// Delete button of Each Entry
 deleteModalBtns.childNodes[1].addEventListener('click',()=>{
     document.getElementById(`${temp}`).remove()
     myLibrary.splice(temp,1)
     bookIndex()
+    saveStorage()
     closeModal()
 })
 
@@ -86,6 +119,7 @@ function addBookToLibrary(book){
     myLibrary.push(book)
 }
 
+//Creating Entries
 function createGrid(bookArray){
     const gridCell = document.createElement('div')
     const cellName = document.createElement('div')
@@ -120,10 +154,6 @@ function createGrid(bookArray){
     progressBar(gridCell,bookArray,cellPagesCompleted)
     iconBar(gridCell,bookArray)
 }
-
-let testbook = new book(`The White Tiger`,`Arvind Adiga`,`2008-09`,`218`,`218`)
-addBookToLibrary(testbook)
-
 
 function clearValue(){
     form.reset()
@@ -187,6 +217,7 @@ function iconBar(cell,array){
         document.getElementById(`${temp}`).childNodes[5].style.display = 'none'
         document.getElementById(`${temp}`).childNodes[6].style.display = 'none'
         myLibrary[event.target.parentElement.parentElement.id].pagesCompleted = myLibrary[event.target.parentElement.parentElement.id].numberOfPages
+        saveStorage()
         bar.removeChild(readIcon) 
     })
     bar.appendChild(deleteIcon)
@@ -206,16 +237,17 @@ function iconBar(cell,array){
 saveBookbtn.addEventListener('click',()=>{
     modifyArray(temp)
     modifyGrid(temp)
+    saveStorage()
     closeModal()
 })
 
-
+//Updating the Entries after editing.
 function modifyGrid(arrayIndex){
     let editBook = document.getElementById(`${arrayIndex}`)
     editBook.childNodes[0].textContent = `${editBookName.value}`
     editBook.childNodes[1].textContent = `By ${editAuthorName.value}`
-    editBook.childNodes[2].textContent = `Publish Year:${editPublishYearHTML.value}`
-    editBook.childNodes[3].textContent = `No. Of. Pages:${editPages.value}`
+    editBook.childNodes[2].textContent = `Publish Year: ${editPublishYearHTML.value}`
+    editBook.childNodes[3].textContent = `No. Of. Pages: ${editPages.value}`
     if(editPagesCompletedHTML.value == '' || editPagesCompletedHTML.value == undefined || editPagesCompletedHTML.value == NaN || editPagesCompletedHTML.value == editPages.value){
         editBook.childNodes[4].textContent = 'Progress: Completed'
         editBook.childNodes[5].style.display = 'none'
@@ -224,7 +256,7 @@ function modifyGrid(arrayIndex){
     else{
         editBook.childNodes[5].style.display = 'block'
         editBook.childNodes[6].style.display = 'block'
-        editBook.childNodes[4].textContent = `Pages Read:${editPagesCompletedHTML.value}`
+        editBook.childNodes[4].textContent = `Pages Read: ${editPagesCompletedHTML.value}`
         editBook.childNodes[5].firstChild.style.width = `${Math.floor(((editPagesCompletedHTML.value / editPages.value)*100))}%`
         editBook.childNodes[5].firstChild.textContent = `${Math.floor(((editPagesCompletedHTML.value / editPages.value)*100))}%`
         editBook.childNodes[6].textContent = `Progress: ${(editPagesCompletedHTML.value)}`+`/`+`${(editPages.value)} pages`
@@ -246,10 +278,7 @@ function modifyGrid(arrayIndex){
     }
 }
 
-myLibrary.forEach(element => {
-    createGrid(element)
-})
-
+//Updating Entries of Array
 function modifyArray(index){
     myLibrary[index].name = editBookName.value
     myLibrary[index].author = editAuthorName.value
@@ -258,10 +287,9 @@ function modifyArray(index){
     myLibrary[index].pagesCompleted = editPagesCompletedHTML.value
 }
 
+//Updating id in DOM
 function bookIndex(){
-    for (let index = 0; index <= myLibrary.length; index++) {
+    for (let index = 1; index < bookDisplay.childNodes.length; index++) {
         bookDisplay.childNodes[index].id = index-1;
     }
 }
-
-bookIndex()
