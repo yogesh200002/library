@@ -1,3 +1,17 @@
+@media only screen and (max-width: 350px) {
+    #confirm-box-content{
+        width: 70%;
+        height: 30%;
+    }
+    .modal-box-content,#confirm-box-content{
+        width: 80%;
+        height: 80%;
+    }
+    .books{
+        justify-content: center;
+    }
+}
+
 body{
     margin: 0;
     padding: 0;
@@ -164,12 +178,13 @@ input{
 }
 
 footer{
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     display: flex;
     justify-content: center;
+    background-color: aliceblue;
     font-size: large;
     font-weight: bold;
 }
