@@ -1,6 +1,6 @@
 # Library
 
-A library Books Entry App done using HTML, CSS and JavaScript.
+A Books Entry App to keep track of the books you read done using HTML, CSS and JavaScript.
 
 ## Features
 - Has Local Storage Function
