@@ -24,9 +24,11 @@ const saveBookbtn = document.querySelector("#editbookbtnform");
 const bookDisplay = document.querySelector(".books");
 const form = document.querySelector("form");
 const confirmModal = document.querySelector(".confirm-delete-modal");
+const confirmDeleteAllModal = document.querySelector(
+  ".confirm-delete-all-modal"
+);
 const deleteModalBtns = document.querySelector(".buttons");
-const yesbtn = deleteModalBtns.childNodes[1];
-const nobtn = deleteModalBtns.childNodes[3];
+const deleteAllModalBtns = document.querySelector(".delete-all-yn");
 const deleteAll = document.querySelector("#delete-all-btn");
 let temp;
 
@@ -50,15 +52,16 @@ closebtn.forEach((btn) => {
 });
 
 deleteAll.addEventListener("click", () => {
-  while (bookDisplay.lastElementChild) {
-    bookDisplay.removeChild(bookDisplay.lastElementChild);
-  }
-  myLibrary.splice(0, myLibrary.length);
-  saveStorage();
+  confirmDeleteAllModal.style.display = "block";
 });
 
 window.addEventListener("click", (e) => {
-  if (e.target == modal || e.target == editModal || e.target == confirmModal) {
+  if (
+    e.target == modal ||
+    e.target == editModal ||
+    e.target == confirmModal ||
+    e.target == confirmDeleteAllModal
+  ) {
     closeModal();
   }
 });
@@ -76,6 +79,7 @@ function closeModal() {
   modal.style.display = "none";
   editModal.style.display = "none";
   confirmModal.style.display = "none";
+  confirmDeleteAllModal.style.display = "none";
 }
 
 // EventListener for Form's Add book Button
@@ -110,7 +114,22 @@ deleteModalBtns.childNodes[1].addEventListener("click", () => {
   closeModal();
 });
 
+deleteAllModalBtns.childNodes[1].addEventListener("click", () => {
+  if (myLibrary.length == 0 || null) {
+    closeModal();
+    alert("Book shelf is empty");
+  } else {
+    while (bookDisplay.lastElementChild) {
+      bookDisplay.removeChild(bookDisplay.lastElementChild);
+    }
+    myLibrary.splice(0, myLibrary.length);
+    saveStorage();
+    closeModal();
+  }
+});
+
 deleteModalBtns.childNodes[3].addEventListener("click", closeModal);
+deleteAllModalBtns.childNodes[3].addEventListener("click", closeModal);
 
 class book {
   constructor(name, author, publishYear, numberOfPages, pagesCompleted) {
@@ -150,7 +169,7 @@ function createGrid(bookArray) {
   let pagesCompletedText = document.createTextNode(
     `Pages Read: ${bookArray.pagesCompleted}`
   );
-  if (bookArray.pagesCompleted.length === 0) {
+  if (bookArray.pagesCompleted == 0 || null || undefined) {
     bookArray.pagesCompleted = bookArray.numberOfPages;
   }
   cellName.appendChild(nameText);
@@ -197,7 +216,7 @@ function progressBar(cell, array, cellPages) {
   if (
     array.pagesCompleted == "" ||
     array.pagesCompleted == undefined ||
-    array.pagesCompleted == NaN ||
+    array.pagesCompleted == null ||
     array.pagesCompleted == array.numberOfPages
   ) {
     outerBar.style.display = "none";
@@ -245,19 +264,22 @@ function iconBar(cell, array) {
       "Progress: Completed";
     document.getElementById(`${temp}`).childNodes[5].style.display = "none";
     document.getElementById(`${temp}`).childNodes[6].style.display = "none";
-    myLibrary[event.target.parentElement.parentElement.id].pagesCompleted =
+    myLibrary[temp].pagesCompleted =
       myLibrary[event.target.parentElement.parentElement.id].numberOfPages;
-    saveStorage();
     bar.removeChild(readIcon);
+    saveStorage();
   });
   bar.appendChild(deleteIcon);
   bar.appendChild(editIcon);
-  if (array.pagesCompleted < array.numberOfPages) {
-    bar.appendChild(readIcon);
-    cell.appendChild(bar);
-  } else if (array.pagesCompleted == null || "" || undefined) {
+  if (
+    array.pagesCompleted == "" ||
+    array.pagesCompleted == undefined ||
+    array.pagesCompleted == null ||
+    array.pagesCompleted == array.numberOfPages
+  ) {
     cell.appendChild(bar);
   } else {
+    bar.appendChild(readIcon);
     cell.appendChild(bar);
   }
 }
@@ -272,6 +294,7 @@ saveBookbtn.addEventListener("click", () => {
 //Updating the Entries after editing.
 function modifyGrid(arrayIndex) {
   let editBook = document.getElementById(`${arrayIndex}`);
+  let bar = editBook.childNodes[7];
   editBook.childNodes[0].textContent = `${editBookName.value}`;
   editBook.childNodes[1].textContent = `By ${editAuthorName.value}`;
   editBook.childNodes[2].textContent = `Publish Year: ${editPublishYearHTML.value}`;
@@ -279,12 +302,13 @@ function modifyGrid(arrayIndex) {
   if (
     editPagesCompletedHTML.value == "" ||
     editPagesCompletedHTML.value == undefined ||
-    editPagesCompletedHTML.value == NaN ||
+    editPagesCompletedHTML.value == null ||
     editPagesCompletedHTML.value == editPages.value
   ) {
     editBook.childNodes[4].textContent = "Progress: Completed";
     editBook.childNodes[5].style.display = "none";
     editBook.childNodes[6].style.display = "none";
+    bar.childNodes[2].remove();
   } else {
     editBook.childNodes[5].style.display = "block";
     editBook.childNodes[6].style.display = "block";
@@ -299,7 +323,6 @@ function modifyGrid(arrayIndex) {
       `Progress: ${editPagesCompletedHTML.value}` +
       `/` +
       `${editPages.value} pages`;
-    let bar = editBook.childNodes[7];
     readIcon = document.createElement("i");
     readIcon.classList.add("material-icons");
     readIcon.textContent = " done ";
@@ -311,7 +334,8 @@ function modifyGrid(arrayIndex) {
       document.getElementById(`${temp}`).childNodes[6].style.display = "none";
       myLibrary[event.target.parentElement.parentElement.id].pagesCompleted =
         myLibrary[event.target.parentElement.parentElement.id].numberOfPages;
-      readIcon.remove();
+      bar.removeChild(bar.childNodes[2]);
+      saveStorage();
     });
     if (bar.childNodes.length == 2) {
       bar.appendChild(readIcon);
@@ -326,6 +350,7 @@ function modifyArray(index) {
   myLibrary[index].publishYear = editPublishYearHTML.value;
   myLibrary[index].numberOfPages = editPages.value;
   myLibrary[index].pagesCompleted = editPagesCompletedHTML.value;
+  saveStorage();
 }
 
 //Updating id in DOM
