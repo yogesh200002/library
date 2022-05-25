@@ -58,7 +58,8 @@ main > div:first-child {
 
 .modal,
 .edit-modal,
-.confirm-delete-modal {
+.confirm-delete-modal,
+.confirm-delete-all-modal {
   display: none;
   position: fixed;
   left: 0;
@@ -100,13 +101,13 @@ main > div:first-child {
   color: red;
 }
 
-.buttons {
+.buttons, .delete-all-yn {
   display: flex;
   align-items: center;
   justify-content: space-around;
 }
 
-.buttons > button {
+.buttons > button, .delete-all-yn > button {
   padding: 10px 25px;
   font-size: medium;
   border-radius: 4px;
@@ -188,8 +189,7 @@ footer {
     width: 70%;
     height: 30%;
   }
-  .modal-box-content,
-  #confirm-box-content {
+  .modal-box-content{
     width: 80%;
     height: 80%;
   }
