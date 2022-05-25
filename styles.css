@@ -80,6 +80,7 @@ main > div:first-child {
   height: 50%;
   border: 5px solid black;
   background-color: antiquewhite;
+  overflow: scroll;
 }
 
 #confirm-box-content {
